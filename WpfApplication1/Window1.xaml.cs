@@ -23,5 +23,10 @@ namespace WpfApplication1
         {
             InitializeComponent();
         }
+
+        private void testingFunc()
+        {
+            Console.WriteLine("this is a testing function for git");
+        }
     }
 }
