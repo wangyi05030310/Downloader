@@ -10,8 +10,6 @@ G:\360data\重要数据\我的文档\Visual Studio 2008\Projects\WpfApplication1
 G:\360data\重要数据\我的文档\Visual Studio 2008\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csproj.GenerateResource.Cache
 G:\360data\重要数据\我的文档\Visual Studio 2008\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.exe
 G:\360data\重要数据\我的文档\Visual Studio 2008\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.pdb
-E:\C#.Net\Project\Prototype_1\WpfApplication1\obj\Debug\WpfApplication1.exe
-E:\C#.Net\Project\Prototype_1\WpfApplication1\obj\Debug\WpfApplication1.pdb
 E:\C#.Net\Project\Prototype_1\WpfApplication1\bin\Debug\WpfApplication1.exe
 E:\C#.Net\Project\Prototype_1\WpfApplication1\bin\Debug\WpfApplication1.pdb
 E:\C#.Net\Project\Prototype_1\WpfApplication1\obj\Debug\ResolveAssemblyReference.cache
@@ -23,3 +21,5 @@ E:\C#.Net\Project\Prototype_1\WpfApplication1\obj\Debug\WpfApplication1.g.resour
 E:\C#.Net\Project\Prototype_1\WpfApplication1\obj\Debug\WpfApplication1.Properties.Resources.resources
 E:\C#.Net\Project\Prototype_1\WpfApplication1\obj\Debug\GenerateResource-ResGen.read.1.tlog
 E:\C#.Net\Project\Prototype_1\WpfApplication1\obj\Debug\GenerateResource-ResGen.write.1.tlog
+E:\C#.Net\Project\Prototype_1\WpfApplication1\obj\Debug\WpfApplication1.exe
+E:\C#.Net\Project\Prototype_1\WpfApplication1\obj\Debug\WpfApplication1.pdb

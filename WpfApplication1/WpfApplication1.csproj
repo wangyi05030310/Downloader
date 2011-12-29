@@ -92,6 +92,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BaseController\CExternalFtpManage.cs" />
+    <Compile Include="BaseController\CHttpManage.cs" />
+    <Compile Include="BaseController\CPrivateFtpManage.cs" />
+    <Compile Include="ElementEntity\CFileInfo.cs" />
+    <Compile Include="ElementEntity\CFtpServerInfo.cs" />
+    <Compile Include="ElementEntity\CHttpLink.cs" />
+    <Compile Include="PlatFormController\CCoreCotnroller.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -137,6 +144,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UIController\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
