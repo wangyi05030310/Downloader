@@ -41,7 +41,7 @@
             <TabItem Header="同济FTP" Name="tabItem3">
                 <Grid Height="323">
                     <TreeView Height="146" HorizontalAlignment="Left" Margin="6,6,0,0" Name="treeView4" VerticalAlignment="Top" Width="339" />
-                    <TreeView Height="146" HorizontalAlignment="Left" Margin="351,6,0,0" Name="treeView5" VerticalAlignment="Top" Width="392" />
+                    <TreeView Height="146" HorizontalAlignment="Right" Margin="0,6,6,0" Name="treeView5" VerticalAlignment="Top" Width="392" />
                     <RichTextBox Height="159" HorizontalAlignment="Left" Margin="6,158,0,0" Name="richTextBox2" VerticalAlignment="Top" Width="737" />
                 </Grid>
             </TabItem>

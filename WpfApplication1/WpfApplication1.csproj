@@ -95,6 +95,7 @@
     <Compile Include="BaseController\CExternalFtpManage.cs" />
     <Compile Include="BaseController\CHttpManage.cs" />
     <Compile Include="BaseController\CPrivateFtpManage.cs" />
+    <Compile Include="BaseController\Facilitation\CHttpSnippet.cs" />
     <Compile Include="ElementEntity\CFileInfo.cs" />
     <Compile Include="ElementEntity\CFtpServerInfo.cs" />
     <Compile Include="ElementEntity\CHttpLink.cs" />
