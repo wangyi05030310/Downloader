@@ -21,8 +21,13 @@ namespace WpfApplication1.BaseController.Facilitation
         private Stream iostream;
         private byte[] nbytes;
         private int nreadsize;
+        public bool downloading = false;
+        public bool downloaded = false;
+        public int downloadbytes;
 
+        public event HttpEventHandler StartEvent;
         public event HttpEventHandler EndEvent;
+        public event HttpEventHandler StopSnippetEvent;
 
         public CHttpSnippet(CHttpManage controller, int thread)
         {
@@ -36,8 +41,12 @@ namespace WpfApplication1.BaseController.Facilitation
             theurl = threadManage.theUrl;
             iostream = null;
             nbytes = new byte[512];
-            nreadsize = -1;
+            nreadsize = 0;
             fs = new FileStream(fileName, FileMode.Create);
+
+            downloading = true;
+            downloaded = false;
+            downloadbytes = threadManage.DevidedSize - 1 - threadManage.fileSize[threadNumber];
 
             //TODO: send an event to UI where a snippet start downloading
         }
@@ -48,23 +57,30 @@ namespace WpfApplication1.BaseController.Facilitation
 
             try
             {
+                StartEvent(this, null);
                 request = (HttpWebRequest)HttpWebRequest.Create(theurl);
 
                 request.AddRange(threadManage.fileStart[threadNumber],
                     threadManage.fileStart[threadNumber] + threadManage.fileSize[threadNumber]);
                 iostream = request.GetResponse().GetResponseStream();
 
-                nreadsize = iostream.Read(nbytes, 0, 512);
-                while (nreadsize > 0)
+                do 
                 {
-                    fs.Write(nbytes, 0, nreadsize);
-                    nreadsize = iostream.Read(nbytes, 0, 512);
-                    //TODO: send an event to UI where something'll change
+                    if (downloading)
+                    {
+                        nreadsize = iostream.Read(nbytes, 0, 512);
+                        fs.Write(nbytes, 0, nreadsize);
+                        downloadbytes += nreadsize;
+                    } 
+                    else
+                    {
+                        threadManage.threadEnd[threadNumber] = true;
+                        return;
+                    }
+                } while (nreadsize > 0);
 
-                }
                 fs.Close();
                 iostream.Close();
-
             }
             catch (System.Exception ex)
             {
@@ -72,15 +88,48 @@ namespace WpfApplication1.BaseController.Facilitation
                 fs.Close();
             }
 
-
-            EndReceive();
+            endreceive();
             threadManage.threadEnd[threadNumber] = true;
         }
 
-        private void EndReceive()
+        private void endreceive()
         {
-            //TODO: send a event to UI where a snippet have reach an end
+            downloading = false;
+            downloaded = true;
             EndEvent(this, null);
+
+        }
+
+        public void StopSnippet()
+        {
+            StopSnippetEvent(this, null);
+        }
+
+        public void StopSnippetProc(object sender, EventArgs e)
+        {
+            if (!downloaded)
+            {
+                downloading = false;
+                downloaded = true;
+                Thread.Sleep(200);
+
+                lock(this)
+                {
+                    FileStream fileStore = new FileStream(threadManage.location + threadManage.FileName + ".tempinfo", FileMode.Append);
+
+                    StreamWriter sw = new StreamWriter(fileStore);
+
+                    sw.WriteLine(threadManage + ":" + downloadbytes);
+
+                    sw.Close();
+
+                    fileStore.Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Snippet downloading thread has stopped!");
+            }
         }
     }
 }
