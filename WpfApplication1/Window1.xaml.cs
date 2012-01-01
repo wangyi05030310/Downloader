@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApplication1.BaseController;
 
 namespace WpfApplication1
 {
@@ -24,14 +25,35 @@ namespace WpfApplication1
             InitializeComponent();
         }
 
-        private void testingFunc()
+        /// <summary>
+        /// 用来测试的函数，界面一点，执行某个功能，只是用来测一测
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void click_to_test(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("this is a testing function for git");
-        }
+            CExternalFtpManage ftpManager = null;
+            try
+            {
+                ftpManager = new CExternalFtpManage("ftp://10.60.0.122/server.xml", "", "");
 
-        private void testDaboBranch()
-        {
-            ;
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return;
+            }
+
+            try
+            {
+//                ftpManager.upload("C:\\Users\\Andriy\\Desktop\\如何阅读一本书.txt");
+                ftpManager.download("C:\\Users\\Andriy\\Desktop\\");
+                MessageBox.Show("success");
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("failed  : " + ex.ToString());
+            }
         }
     }
 }
