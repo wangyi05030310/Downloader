@@ -60,7 +60,7 @@ namespace WpfApplication1.BaseController
             this.file_name = url.Substring(url.LastIndexOf('/') + 1);
             if (file_name == "")
             {
-                throw new ArgumentException("URL should contain a file");
+//                throw new ArgumentException("URL should contain a file");
             }
 
             this.url = url;
@@ -141,7 +141,7 @@ namespace WpfApplication1.BaseController
 
             request = (FtpWebRequest)FtpWebRequest.Create("ftp://10.60.0.122/" + fileInf.Name);
             request.Credentials = new NetworkCredential(user_name, user_pwd);
-            request.KeepAlive = false;
+//            request.KeepAlive = false;
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.UseBinary = true;
             request.ContentLength = fileInf.Length;
@@ -174,5 +174,45 @@ namespace WpfApplication1.BaseController
                 fs.Close();
             }
         } 
+
+        public string[] getFileList()
+        {
+            List<string> files = new List<string>();
+
+            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(url);
+            request.UseBinary = true;
+            request.Credentials = new NetworkCredential(user_name, user_pwd);
+            request.Method = WebRequestMethods.Ftp.ListDirectory;
+
+            FtpWebResponse response = null;
+            StreamReader reader = null;
+            try
+            {
+                response = (FtpWebResponse) request.GetResponse();
+                reader = new StreamReader(response.GetResponseStream());
+                string line = reader.ReadLine();
+                while (line != null)
+                {
+                    files.Add(line);
+                    line = reader.ReadLine();
+                }
+            }
+            catch (System.Exception ex)
+            {
+            	throw ex;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+            return files.ToArray();
+        }
     }
 }

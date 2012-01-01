@@ -35,7 +35,7 @@ namespace WpfApplication1
             CExternalFtpManage ftpManager = null;
             try
             {
-                ftpManager = new CExternalFtpManage("ftp://10.60.0.122/server.xml", "", "");
+                ftpManager = new CExternalFtpManage("ftp://10.60.0.122/", "", "");
 
             }
             catch (System.Exception ex)
@@ -47,8 +47,14 @@ namespace WpfApplication1
             try
             {
 //                ftpManager.upload("C:\\Users\\Andriy\\Desktop\\如何阅读一本书.txt");
-                ftpManager.download("C:\\Users\\Andriy\\Desktop\\");
-                MessageBox.Show("success");
+                //ftpManager.download("C:\\Users\\Andriy\\Desktop\\");
+                string[] files = ftpManager.getFileList();
+                StringBuilder builder = new StringBuilder();
+                foreach (string s in files)
+                {
+                    builder.Append(s + "  ||  ");
+                }
+                MessageBox.Show(builder.ToString());
             }
             catch (System.Exception ex)
             {
