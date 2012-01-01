@@ -24,6 +24,8 @@ namespace WpfApplication1.BaseController
         private string user_name;
         private string user_pwd;
 
+        private bool enable_ssh;
+
         /// <summary>
         /// 包含在url里的文件名
         /// </summary>
@@ -35,7 +37,7 @@ namespace WpfApplication1.BaseController
         /// <param name="url"></param>
         /// <param name="name"></param>
         /// <param name="pwd"></param>
-        public CExternalFtpManage(string url, string name, string pwd)
+        public CExternalFtpManage(string url, string name, string pwd, bool enable_ssh = true)
         {
             if (url == null)
             {
@@ -66,6 +68,7 @@ namespace WpfApplication1.BaseController
             this.url = url;
             this.user_name = name;
             this.user_pwd = pwd;
+            this.enable_ssh = enable_ssh;
         }
 
 
@@ -87,7 +90,7 @@ namespace WpfApplication1.BaseController
 
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(url);
 
-            //request.EnableSsl = true;
+            request.EnableSsl = enable_ssh;
             request.Credentials = new NetworkCredential(user_name, user_pwd);
             request.Method = WebRequestMethods.Ftp.DownloadFile;
             request.UseBinary = true;
@@ -145,7 +148,7 @@ namespace WpfApplication1.BaseController
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.UseBinary = true;
             request.ContentLength = fileInf.Length;
-//            request.EnableSsl = true;
+            request.EnableSsl = enable_ssh;
 
             byte[] buff = new byte[BUFF_SIZE];
             int contentLen;
@@ -181,6 +184,7 @@ namespace WpfApplication1.BaseController
 
             FtpWebRequest request = (FtpWebRequest) WebRequest.Create(url);
             request.UseBinary = true;
+            request.EnableSsl = enable_ssh;
             request.Credentials = new NetworkCredential(user_name, user_pwd);
             request.Method = WebRequestMethods.Ftp.ListDirectory;
 

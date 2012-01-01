@@ -35,7 +35,7 @@ namespace WpfApplication1
             CExternalFtpManage ftpManager = null;
             try
             {
-                ftpManager = new CExternalFtpManage("ftp://10.60.0.122/", "", "");
+                ftpManager = new CExternalFtpManage("ftp://10.60.0.122/", "", "", false);
 
             }
             catch (System.Exception ex)
