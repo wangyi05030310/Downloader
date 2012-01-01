@@ -8,6 +8,12 @@ using WpfApplication1.BaseController.Facilitation;
 
 namespace WpfApplication1.BaseController
 {
+    class IntPair
+    {
+        public int threadNum;
+        public int threadBytes;
+    }
+
     class CHttpManage
     {
         public bool[] threadEnd;
@@ -15,13 +21,19 @@ namespace WpfApplication1.BaseController
         public int[] fileStart;
         public int[] fileSize;
         public string theUrl;
-        private string FileName;
-        private string location;
+        public string FileName;
+        public string location;
         private bool combination;
         public int threadTotality;
+        public int DevidedSize;
+
+        public bool suspend = false;
 
         private Thread[] threadRunning;
         private CHttpSnippet[] model;
+        private Thread combineThread;
+
+        public FileStream fileSwap;             
 
         public CHttpManage(string url, string loc, int num)
         {
@@ -35,12 +47,9 @@ namespace WpfApplication1.BaseController
             }
 
             FileName = theUrl.Substring(theUrl.LastIndexOf('/'));
-        }
 
-        public void startDownload()
-        {
             DateTime dt = DateTime.Now;
-            //TODO: send an message to UI of start time
+            ///////////////////////////
 
             HttpWebRequest request;
             long filesize = 0;
@@ -53,7 +62,7 @@ namespace WpfApplication1.BaseController
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show("Error in stardDownload:" + ex.Message);
+                MessageBox.Show("ErrorEventArgs in stardDownload!" + ex.Message);
             }
 
             threadEnd = new bool[threadTotality];
@@ -61,23 +70,59 @@ namespace WpfApplication1.BaseController
             fileStart = new int[threadTotality];
             fileSize = new int[threadTotality];
 
-            int filethread = (int)filesize / threadTotality;
-            int filethreadrest = filethread + (int)filesize % threadTotality;
+            DevidedSize = (int)filesize / threadTotality;
 
-            for (int i = 0; i < threadTotality;++i )
+            string tempstr = "";
+            IntPair ip = new IntPair();
+
+            try
             {
-                threadEnd[i] = false;
-                snippet[i] = i.ToString() + ".temp";
-                if (i < threadTotality - 1)
+                                //续传 则打开保存每个临时快线程读取进度的文件
+                fileSwap = new FileStream(location + FileName + ".tempinfo", FileMode.Open);
+                StreamReader sr = new StreamReader(fileSwap);
+
+                threadTotality = Convert.ToInt32(sr.ReadLine());
+
+                for (int i = 0; i < threadTotality; ++i )
                 {
-                    fileStart[i] = filethread * i;
-                    fileSize[i] = filethread - 1;
+                    snippet[i] = location + FileName + "_" + i.ToString() + ".piece";
+                    tempstr = sr.ReadLine();
+                    ip = strTackle(tempstr);
+                    fileStart[ip.threadNum] = ip.threadBytes + DevidedSize * ip.threadNum;
+                    fileSize[ip.threadNum] = DevidedSize - 1 - ip.threadBytes;
                 }
-                else
+
+                sr.Close();
+
+                //将读取好的临时文件清空
+                fileSwap = new FileStream(location + FileName + ".tempinfo", FileMode.Create);
+                fileSwap.Close();
+            }
+            catch (System.IO.FileNotFoundException ex)
+            {
+                fileSwap = new FileStream(location + FileName + ".tempinfo", FileMode.Create);
+                StreamWriter stw = new StreamWriter(fileSwap);
+                stw.WriteLine(threadTotality);
+                stw.Close();
+
+                for (int i = 0; i < threadTotality; ++i)
                 {
-                    fileStart[i] = filethread * i;
-                    fileSize[i] = filethread - 1;
+                    threadEnd[i] = false;
+                    snippet[i] = location + FileName + "_" + i.ToString() + ".piece";
+                    if (i < threadTotality - 1)
+                    {
+                        fileStart[i] = DevidedSize * i;
+                        fileSize[i] = DevidedSize - 1;
+                    }
+                    else
+                    {
+                        fileStart[i] = DevidedSize * i;
+                        fileSize[i] = DevidedSize - 1;
+                    }
                 }
+
+                fileSwap.Close();
+                stw.Close();
             }
 
             threadRunning = new Thread[threadTotality];
@@ -86,12 +131,22 @@ namespace WpfApplication1.BaseController
             for (int i = 0; i < threadTotality;++i )
             {
                 model[i] = new CHttpSnippet(this, i);
+                model[i].StartEvent += new HttpEventHandler(OnStartReceive);
                 model[i].EndEvent += new HttpEventHandler(OnEndReceive);
+                model[i].StopSnippetEvent += new HttpEventHandler(model[i].StopSnippetProc);
+
                 threadRunning[i] = new Thread(new ThreadStart(model[i].receive));
+
+                combineThread = new Thread(new ThreadStart(combineFile));
+            }
+        }
+
+        public void startDownload()
+        {
+            for (int i = 0; i < threadTotality;++i )
+            {
                 threadRunning[i].Start();
             }
-
-            Thread combineThread = new Thread(new ThreadStart(combineFile));
             combineThread.Start();
         }
 
@@ -112,6 +167,11 @@ namespace WpfApplication1.BaseController
                 if (combination == true)
                 {
                     break;
+                }
+                if (suspend)
+                {
+                    //
+                    return;
                 }
             }
 
@@ -140,11 +200,63 @@ namespace WpfApplication1.BaseController
             fs.Close();
             DateTime dt = DateTime.Now;
             //TODO: send an event to UI of the end time
+
+            FileInfo file;
+
+            for (int i = 0; i < threadTotality; ++i )
+            {
+                file = new FileInfo(snippet[i]);
+                file.Delete();
+            }
+
+            file = new FileInfo(location + FileName + ".tempinfo");
+            if (file.Exists)
+            {
+                file.Delete();
+            }
         }
 
-        private void OnEndReceive(object sender, EventArgs e)
+        void OnStartReceive(Object sender, EventArgs e)     //这个事件处理函数可以放在UI层里面用于通知UI作出相应的变化
         {
-            //TODO: Reply the snippet of the download finished event
+            //
+        }
+
+        void OnEndReceive(Object sender, EventArgs e)       //这个事件处理函数可以放在UI层里面用于通知UI作出相应的变化
+        {
+            //
+        }
+
+        public void StopDownload()
+        {
+            suspend = true; //如果中断 则设置中断量 在文件合并线程里面跳出
+
+            fileSwap = new FileStream(location + FileName + ".tempinfo", FileMode.Create);
+            StreamWriter stw = new StreamWriter(fileSwap);
+            stw.WriteLine(threadTotality);
+            stw.Close();
+            fileSwap.Close();
+
+            for (int i = 0; i < threadTotality; ++i)
+            {
+                if (model[i].downloading)
+                {
+                    model[i].StopSnippet();
+                }
+            }
+
+            fileSwap.Close();
+        }
+
+        private IntPair strTackle(string strin)
+        {
+            IntPair ret = new IntPair();
+
+            int index = strin.IndexOf(':');
+
+            ret.threadNum = Convert.ToInt32(strin.Substring(0, index));
+            ret.threadBytes = Convert.ToInt32(strin.Substring(index + 1));
+
+            return ret;
         }
     }
 }
