@@ -76,8 +76,14 @@ namespace WpfApplication1.BaseController
         /// 下载到指定路径
         /// </summary>
         /// <param name="targetPath"></param>
-        public void download(string targetPath)
+        /// <param name="overrite"></param>
+        public void download(string targetPath, bool overrite = false)
         {
+            if (!overrite && File.Exists(targetPath + file_name))
+            {
+                throw new ArgumentException("target path existed! Not allowed to overwrite!");
+            }
+
             FileStream fs;
             try
             {
@@ -178,6 +184,10 @@ namespace WpfApplication1.BaseController
             }
         } 
 
+        /// <summary>
+        /// 拿到ftp上此目录下所有文件名
+        /// </summary>
+        /// <returns></returns>
         public string[] getFileList()
         {
             List<string> files = new List<string>();
@@ -217,6 +227,58 @@ namespace WpfApplication1.BaseController
                 }
             }
             return files.ToArray();
+        }
+
+        /// <summary>
+        /// 删除指定的文件
+        /// </summary>
+        public void delete()
+        {
+
+        }
+
+        /// <summary>
+        /// 在FTP上创建一个目录
+        /// </summary>
+        /// <param name="dir"></param>
+        public void makeDir(string dir)
+        {
+
+        }
+
+        /// <summary>
+        /// 在FTP上删除一个目录
+        /// </summary>
+        public void deleteDir()
+        {
+
+        }
+
+        /// <summary>
+        /// 获得指定一个文件的大小
+        /// </summary>
+        /// <returns></returns>
+        public long getFileSize()
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// 改名！
+        /// </summary>
+        public void renameFile()
+        {
+            FtpWebRequest request;
+            //request.RenameTo
+        }
+
+        /// <summary>
+        /// 获得一个含有详细信息的string[]
+        /// </summary>
+        /// <returns></returns>
+        public string[] getFileDetailList()
+        {
+            return null;
         }
     }
 }
