@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfApplication1.BaseController;
+using WpfApplication1.ElementEntity;
 
 namespace WpfApplication1
 {
@@ -23,6 +24,8 @@ namespace WpfApplication1
         public Window1()
         {
             InitializeComponent();
+
+
         }
 
         /// <summary>
@@ -35,8 +38,11 @@ namespace WpfApplication1
             CExternalFtpManage ftpManager = null;
             try
             {
-                ftpManager = new CExternalFtpManage("ftp://10.60.0.122/", "", "", false);
+                //ftpManager = new CExternalFtpManage("ftp://10.60.0.122/", "", "", false);
 
+                CFtpServerInfo ftpInfo = new CFtpServerInfo("ftp://dygod1:dygod1@d315.dygod.org:2016/生活大爆炸第五季/[电影天堂www.dy2018.net]生活大爆炸第五季11集[中英双字].rmvb");
+                ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/server.xml");
+                ftpManager = new CExternalFtpManage(ftpInfo, false);
             }
             catch (System.Exception ex)
             {
@@ -48,13 +54,14 @@ namespace WpfApplication1
             {
 //                ftpManager.upload("C:\\Users\\Andriy\\Desktop\\如何阅读一本书.txt");
                 //ftpManager.download("C:\\Users\\Andriy\\Desktop\\");
-                string[] files = ftpManager.getFileList();
-                StringBuilder builder = new StringBuilder();
-                foreach (string s in files)
-                {
-                    builder.Append(s + "  ||  ");
-                }
-                MessageBox.Show(builder.ToString());
+                ftpManager.download("C:\\Users\\Andriy\\Desktop");
+//                 string[] files = ftpManager.getFileList();
+//                 StringBuilder builder = new StringBuilder();
+//                 foreach (string s in files)
+//                 {
+//                     builder.Append(s + "  ||  ");
+//                 }
+//                 MessageBox.Show(builder.ToString());
             }
             catch (System.Exception ex)
             {

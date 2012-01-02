@@ -10,12 +10,13 @@ namespace WpfApplication1.ElementEntity
     /// </summary>
     class CFtpServerInfo
     {
-        public readonly string FTP_PREFIX = "ftp://";
+        public static readonly string FTP_PREFIX = "ftp://";
 
         private string server_addr;
-        private string file_path;
-        private string user_name;
-        private string user_pwd;
+        private string file_path = "";
+        private string file_name = "";
+        private string user_name = "";
+        private string user_pwd = "";
 
         /// <summary>
         /// FTP server的地址，IP或者非IP
@@ -33,6 +34,15 @@ namespace WpfApplication1.ElementEntity
         {
             set { file_path = value; }
             get { return file_path; }
+        }
+
+        /// <summary>
+        /// 此文件的文件名
+        /// </summary>
+        public string FileName
+        {
+            set { file_name = value; }
+            get { return file_name; }
         }
 
         /// <summary>
@@ -80,7 +90,12 @@ namespace WpfApplication1.ElementEntity
             else
             {
                 server_addr = url;
-                file_path = "";
+            }
+
+            index = url.LastIndexOf('/');
+            if (index != -1)
+            {
+                file_name = url.Substring(index + 1);
             }
         }
 
@@ -108,7 +123,7 @@ namespace WpfApplication1.ElementEntity
         /// <returns></returns>
         public string getFullUrl()
         {
-            return server_addr + file_path;
+            return FTP_PREFIX + server_addr + file_path;
         }
     }
 }
