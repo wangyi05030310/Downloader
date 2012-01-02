@@ -96,10 +96,14 @@
     <Compile Include="BaseController\CHttpManage.cs" />
     <Compile Include="BaseController\CPrivateFtpManage.cs" />
     <Compile Include="BaseController\Facilitation\CHttpSnippet.cs" />
+    <Compile Include="BaseController\template.cs" />
     <Compile Include="ElementEntity\CFileInfo.cs" />
     <Compile Include="ElementEntity\CFtpServerInfo.cs" />
     <Compile Include="ElementEntity\CHttpLink.cs" />
     <Compile Include="PlatFormController\CCoreCotnroller.cs" />
+    <Compile Include="UIController\CDownloadedUIController.cs" />
+    <Compile Include="UIController\CDownloadingUIController.cs" />
+    <Compile Include="UIController\CFTPUIController.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -146,9 +150,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UIController\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
