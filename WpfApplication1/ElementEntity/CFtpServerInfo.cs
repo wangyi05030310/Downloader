@@ -5,6 +5,9 @@ using System.Text;
 
 namespace WpfApplication1.ElementEntity
 {
+    /// <summary>
+    /// 登陸的ftp服務器的信息
+    /// </summary>
     class CFtpServerInfo
     {
     }
