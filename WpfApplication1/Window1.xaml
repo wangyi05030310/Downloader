@@ -10,8 +10,8 @@
                 </MenuItem>
                 <MenuItem Header="EXIT"/>
             </MenuItem>
-            <MenuItem Header="FTP" Click="click_to_test">
-                <MenuItem Header="Connect to new FTP"/>
+            <MenuItem Header="FTP">
+                <MenuItem Header="Connect to new FTP" Click="click_to_test" Name="connectItem"/>
                 
             </MenuItem>
         </Menu>

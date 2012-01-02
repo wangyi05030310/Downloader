@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WpfApplication1.ElementEntity
+namespace WpfApplication1.UIController
 {
     /// <summary>
-    /// 使用過的http鏈接的信息
+    /// 已下载部分的界面控制
     /// </summary>
-    class CHttpLink
+    class CDownloadedUIController
     {
     }
 }

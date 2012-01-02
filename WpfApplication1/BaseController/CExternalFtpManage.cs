@@ -5,13 +5,11 @@ using System.Text;
 using System.Net;
 using System.Threading;
 using System.IO;
+using WpfApplication1.ElementEntity;
 
 namespace WpfApplication1.BaseController
 {
-    class CFTPState
-    {
-            
-    }
+
 
     /// <summary>
     /// 外部FTP资源的下载管理
@@ -20,55 +18,29 @@ namespace WpfApplication1.BaseController
     {
         private static readonly int BUFF_SIZE = 4096;
 
-        private string url;
-        private string user_name;
-        private string user_pwd;
+        private CFtpServerInfo ftpInfo;
 
         private bool enable_ssh;
 
-        /// <summary>
-        /// 包含在url里的文件名
-        /// </summary>
-        private string file_name;
 
         /// <summary>
         /// 如果构造函数不抛异常，url就可以用
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="name"></param>
-        /// <param name="pwd"></param>
-        public CExternalFtpManage(string url, string name, string pwd, bool enable_ssh = true)
+        /// <param name="ftpInfo"></param>
+        /// <param name="enable_ssh"></param>
+        public CExternalFtpManage(CFtpServerInfo ftpInfo, bool enable_ssh = true)
         {
-            if (url == null)
-            {
-                throw new System.ArgumentNullException("url should NOT be null!");
-            }
-
-            url.Trim();
-            if (!url.StartsWith("ftp://", StringComparison.CurrentCultureIgnoreCase))
-            {
-                throw new System.ArgumentException("url should start with \"ftp://\"");
-            }
+            this.ftpInfo = ftpInfo;
+            this.enable_ssh = enable_ssh;
 
             try
             {
-                WebRequest.Create(url);
+                WebRequest.Create(ftpInfo.getFullUrl());
             }
             catch (System.Exception ex)
             {
             	throw ex;
             }
-
-            this.file_name = url.Substring(url.LastIndexOf('/') + 1);
-            if (file_name == "")
-            {
-//                throw new ArgumentException("URL should contain a file");
-            }
-
-            this.url = url;
-            this.user_name = name;
-            this.user_pwd = pwd;
-            this.enable_ssh = enable_ssh;
         }
 
 
@@ -87,17 +59,17 @@ namespace WpfApplication1.BaseController
             FileStream fs;
             try
             {
-                fs = File.Create(targetPath + file_name);
+                fs = File.Create(targetPath + '\\' + ftpInfo.FileName);
             }
             catch (System.Exception)
             {
                 throw new System.ArgumentException("target path not available!");
             }
 
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(url);
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpInfo.getFullUrl());
 
             request.EnableSsl = enable_ssh;
-            request.Credentials = new NetworkCredential(user_name, user_pwd);
+            request.Credentials = new NetworkCredential(ftpInfo.UserName, ftpInfo.UserPwd);
             request.Method = WebRequestMethods.Ftp.DownloadFile;
             request.UseBinary = true;
             request.UsePassive = true;
@@ -149,7 +121,7 @@ namespace WpfApplication1.BaseController
             FtpWebRequest request;
 
             request = (FtpWebRequest)FtpWebRequest.Create("ftp://10.60.0.122/" + fileInf.Name);
-            request.Credentials = new NetworkCredential(user_name, user_pwd);
+            request.Credentials = new NetworkCredential(ftpInfo.UserName, ftpInfo.UserPwd);
 //            request.KeepAlive = false;
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.UseBinary = true;
@@ -192,10 +164,10 @@ namespace WpfApplication1.BaseController
         {
             List<string> files = new List<string>();
 
-            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(url);
+            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(ftpInfo.getFullUrl());
             request.UseBinary = true;
             request.EnableSsl = enable_ssh;
-            request.Credentials = new NetworkCredential(user_name, user_pwd);
+            request.Credentials = new NetworkCredential(ftpInfo.UserName, ftpInfo.UserPwd);
             request.Method = WebRequestMethods.Ftp.ListDirectory;
 
             FtpWebResponse response = null;
