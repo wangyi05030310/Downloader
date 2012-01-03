@@ -39,12 +39,12 @@ namespace WpfApplication1.BaseController
             FtpWebRequest request;
 
             request = (FtpWebRequest)FtpWebRequest.Create("ftp://10.60.0.122/" + fileInf.Name);
-            request.Credentials = new NetworkCredential(ftpInfo.UserName, ftpInfo.UserPwd);
+            request.Credentials = new NetworkCredential(m_ftpInfo.UserName, m_ftpInfo.UserPwd);
             //            request.KeepAlive = false;
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.UseBinary = true;
             request.ContentLength = fileInf.Length;
-            request.EnableSsl = enable_ssh;
+            request.EnableSsl = m_enable_ssh;
 
             byte[] buff = new byte[BUFF_SIZE];
             int contentLen;
@@ -82,10 +82,10 @@ namespace WpfApplication1.BaseController
         {
             List<string> files = new List<string>();
 
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpInfo.getFullUrl());
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(m_ftpInfo.getFullUrl());
             request.UseBinary = true;
-            request.EnableSsl = enable_ssh;
-            request.Credentials = new NetworkCredential(ftpInfo.UserName, ftpInfo.UserPwd);
+            request.EnableSsl = m_enable_ssh;
+            request.Credentials = new NetworkCredential(m_ftpInfo.UserName, m_ftpInfo.UserPwd);
             request.Method = WebRequestMethods.Ftp.ListDirectory;
 
             FtpWebResponse response = null;

@@ -14,13 +14,13 @@ namespace WpfApplication1.BaseController
     {
         protected static readonly int BUFF_SIZE = 4096;
 
-        protected CFtpServerInfo ftpInfo;
-        protected bool enable_ssh;
+        protected CFtpServerInfo m_ftpInfo;
+        protected bool m_enable_ssh;
 
         public CAbstractFtpManager(CFtpServerInfo ftpInfo, bool enable_ssh = true)
         {
-            this.ftpInfo = ftpInfo;
-            this.enable_ssh = enable_ssh;
+            this.m_ftpInfo = ftpInfo;
+            this.m_enable_ssh = enable_ssh;
 
             try
             {

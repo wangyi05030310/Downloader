@@ -13,19 +13,19 @@ namespace WpfApplication1.ElementEntity
     {
         public static readonly string FTP_PREFIX = "ftp://";
 
-        private string server_addr;
-        private string file_path = "";
-        private string file_name = "";
-        private string user_name = "";
-        private string user_pwd = "";
+        private string m_server_addr;
+        private string m_file_path = "";
+        private string m_file_name = "";
+        private string m_user_name = "";
+        private string m_user_pwd = "";
 
         /// <summary>
         /// FTP server的地址，IP或者非IP
         /// </summary>
         public string ServerAddr
         {
-            set { server_addr = value; }
-            get { return server_addr; }
+            set { m_server_addr = value; }
+            get { return m_server_addr; }
         }
 
         /// <summary>
@@ -34,8 +34,8 @@ namespace WpfApplication1.ElementEntity
         /// </summary>
         public string FilePath
         {
-            set { file_path = value; }
-            get { return file_path; }
+            set { m_file_path = value; }
+            get { return m_file_path; }
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace WpfApplication1.ElementEntity
         /// </summary>
         public string FileName
         {
-            set { file_name = value; }
-            get { return file_name; }
+            set { m_file_name = value; }
+            get { return m_file_name; }
         }
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace WpfApplication1.ElementEntity
         /// </summary>
         public string UserName
         {
-            set { user_name = value; }
-            get { return user_name; }
+            set { m_user_name = value; }
+            get { return m_user_name; }
         }
 
         /// <summary>
@@ -61,8 +61,8 @@ namespace WpfApplication1.ElementEntity
         /// </summary>
         public string UserPwd
         {
-            set { user_pwd = value; }
-            get { return user_pwd; }
+            set { m_user_pwd = value; }
+            get { return m_user_pwd; }
         }
 
         public CFtpServerInfo(string url)
@@ -79,27 +79,27 @@ namespace WpfApplication1.ElementEntity
             {
                 //@ found
                 string name_pwd = url.Substring(0, index);
-                this.decodeNamePwd(name_pwd, out user_name, out user_pwd);
+                this.decodeNamePwd(name_pwd, out m_user_name, out m_user_pwd);
                 url = url.Substring(index + 1);
             }
 
             index = url.IndexOf('/');
             if (index != -1)
             {
-                server_addr = url.Substring(0, index);
-                file_path = url.Substring(index);
+                m_server_addr = url.Substring(0, index);
+                m_file_path = url.Substring(index);
             }
             else
             {
-                server_addr = url;
+                m_server_addr = url;
                 return;
             }
 
-            index = file_path.LastIndexOf('/');
+            index = m_file_path.LastIndexOf('/');
             if (index != -1)
             {
-                file_name = file_path.Substring(index + 1);
-                file_path = file_path.Substring(0, index + 1);
+                m_file_name = m_file_path.Substring(index + 1);
+                m_file_path = m_file_path.Substring(0, index + 1);
             }
         }
 
@@ -127,7 +127,7 @@ namespace WpfApplication1.ElementEntity
         /// <returns></returns>
         public string getFullUrl()
         {
-            return FTP_PREFIX + server_addr + file_path + file_name;
+            return FTP_PREFIX + m_server_addr + m_file_path + m_file_name;
         }
     }
 }

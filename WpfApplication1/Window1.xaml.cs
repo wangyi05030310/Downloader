@@ -39,10 +39,8 @@ namespace WpfApplication1
             CExternalFtpManage ftpManager = null;
             try
             {
-                //ftpManager = new CExternalFtpManage("ftp://10.60.0.122/", "", "", false);
-
-                CFtpServerInfo ftpInfo = new CFtpServerInfo("ftp://dygod1:dygod1@d315.dygod.org:2016/生活大爆炸第五季/[电影天堂www.dy2018.net]生活大爆炸第五季11集[中英双字].rmvb");
-                //ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/server.xml");
+                CFtpServerInfo ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/server.xml");
+                ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/各种软件/TortoiseSVN-1.6.14.21012-win32-svn-1.6.16.msi");
                 ftpManager = new CExternalFtpManage(ftpInfo, false);
             }
             catch (System.Exception ex)
@@ -54,12 +52,11 @@ namespace WpfApplication1
             try
             {
 //                ftpManager.upload("C:\\Users\\Andriy\\Desktop\\如何阅读一本书.txt");
-                //ftpManager.download("C:\\Users\\Andriy\\Desktop\\");
 
-                //ftpManager.download("C:\\Users\\Andriy\\Desktop");
-
-                long size = ftpManager.getFileSize();
-                MessageBox.Show("size: " + Formatter.formatSize(size));
+                ftpManager.startDownloading("C:\\Users\\Andriy\\Desktop", true);
+                long size = ftpManager.FileSize;
+//                long size = ftpManager.getFileSize();
+//                MessageBox.Show("size: " + Formatter.formatSize(size));
 
 //                 string[] files = ftpManager.getFileList();
 //                 StringBuilder builder = new StringBuilder();
