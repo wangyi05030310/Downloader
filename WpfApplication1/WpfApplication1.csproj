@@ -93,6 +93,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BaseController\CExternalFtpManage.cs" />
+    <Compile Include="BaseController\CAbstractFtpManager.cs" />
     <Compile Include="BaseController\CHttpManage.cs" />
     <Compile Include="BaseController\CPrivateFtpManage.cs" />
     <Compile Include="BaseController\Facilitation\CHttpSnippet.cs" />
@@ -101,10 +102,12 @@
     <Compile Include="ElementEntity\CFtpServerInfo.cs" />
     <Compile Include="ElementEntity\CHttpLink.cs" />
     <Compile Include="Exceptions\FileExistedException.cs" />
+    <Compile Include="Exceptions\URLInvalidException.cs" />
     <Compile Include="PlatFormController\CCoreCotnroller.cs" />
     <Compile Include="UIController\CDownloadedUIController.cs" />
     <Compile Include="UIController\CDownloadingUIController.cs" />
     <Compile Include="UIController\CFTPUIController.cs" />
+    <Compile Include="Util\Formatter.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
       <SubType>Code</SubType>
