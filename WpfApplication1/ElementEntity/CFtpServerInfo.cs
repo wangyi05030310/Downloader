@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WpfApplication1.Exceptions;
 
 namespace WpfApplication1.ElementEntity
 {
@@ -28,7 +29,8 @@ namespace WpfApplication1.ElementEntity
         }
 
         /// <summary>
-        /// 此文件在FTP server下的路径，包括最开始的'/'
+        /// 此文件在FTP server下的路径，包括最开始的'/'，
+        /// 不包括最后边的文件名
         /// </summary>
         public string FilePath
         {
@@ -68,7 +70,7 @@ namespace WpfApplication1.ElementEntity
             url = url.Trim();
             if (!url.StartsWith("ftp://", StringComparison.CurrentCultureIgnoreCase))
             {
-                throw new System.ArgumentException("url should start with \"ftp://\"");
+                throw new URLInvalidException("url should start with \"ftp://\"");
             }
 
             url = url.Substring(6);
@@ -90,12 +92,14 @@ namespace WpfApplication1.ElementEntity
             else
             {
                 server_addr = url;
+                return;
             }
 
-            index = url.LastIndexOf('/');
+            index = file_path.LastIndexOf('/');
             if (index != -1)
             {
-                file_name = url.Substring(index + 1);
+                file_name = file_path.Substring(index + 1);
+                file_path = file_path.Substring(0, index + 1);
             }
         }
 
@@ -123,7 +127,7 @@ namespace WpfApplication1.ElementEntity
         /// <returns></returns>
         public string getFullUrl()
         {
-            return FTP_PREFIX + server_addr + file_path;
+            return FTP_PREFIX + server_addr + file_path + file_name;
         }
     }
 }
