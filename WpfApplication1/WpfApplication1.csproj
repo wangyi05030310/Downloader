@@ -100,6 +100,7 @@
     <Compile Include="ElementEntity\CFileInfo.cs" />
     <Compile Include="ElementEntity\CFtpServerInfo.cs" />
     <Compile Include="ElementEntity\CHttpLink.cs" />
+    <Compile Include="Exceptions\FileExistedException.cs" />
     <Compile Include="PlatFormController\CCoreCotnroller.cs" />
     <Compile Include="UIController\CDownloadedUIController.cs" />
     <Compile Include="UIController\CDownloadingUIController.cs" />
