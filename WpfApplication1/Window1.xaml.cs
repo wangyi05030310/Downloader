@@ -29,6 +29,8 @@ namespace WpfApplication1
 
         }
 
+        private CExternalFtpManage ftpManager = null;
+
         /// <summary>
         /// 用来测试的函数，界面一点，执行某个功能，只是用来测一测
         /// </summary>
@@ -36,12 +38,15 @@ namespace WpfApplication1
         /// <param name="e"></param>
         private void click_to_test(object sender, RoutedEventArgs e)
         {
-            CExternalFtpManage ftpManager = null;
             try
             {
                 CFtpServerInfo ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/server.xml");
                 ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/各种软件/TortoiseSVN-1.6.14.21012-win32-svn-1.6.16.msi");
                 ftpManager = new CExternalFtpManage(ftpInfo, false);
+                ftpManager.onDownloadStarted += new CExternalFtpManage.FtpDownloadHandler(onDownloadStarted);
+                ftpManager.onDownloadAdvanced += new CExternalFtpManage.FtpDownloadHandler(onDownloadAdvanced);
+                ftpManager.onDownloadFinished += new CExternalFtpManage.FtpDownloadHandler(onDownloadFinished);
+                ftpManager.onFileSizeRetrieved += new CExternalFtpManage.FtpDownloadHandler(onFileSizeRetrieved);
             }
             catch (System.Exception ex)
             {
@@ -51,25 +56,34 @@ namespace WpfApplication1
 
             try
             {
-//                ftpManager.upload("C:\\Users\\Andriy\\Desktop\\如何阅读一本书.txt");
-
                 ftpManager.startDownloading("C:\\Users\\Andriy\\Desktop", true);
                 long size = ftpManager.FileSize;
-//                long size = ftpManager.getFileSize();
-//                MessageBox.Show("size: " + Formatter.formatSize(size));
 
-//                 string[] files = ftpManager.getFileList();
-//                 StringBuilder builder = new StringBuilder();
-//                 foreach (string s in files)
-//                 {
-//                     builder.Append(s + "  ||  ");
-//                 }
-//                 MessageBox.Show(builder.ToString());
             }
             catch (System.Exception ex)
             {
                 MessageBox.Show("failed  : " + ex.ToString());
             }
+        }
+
+        private void onDownloadStarted(object o, EventArgs args)
+        {
+            MessageBox.Show("started");
+        }
+
+        private void onDownloadAdvanced(object o, EventArgs args)
+        {
+
+        }
+
+        private void onDownloadFinished(object o, EventArgs args)
+        {
+            MessageBox.Show("finished");
+        }
+
+        private void onFileSizeRetrieved(object o, EventArgs args)
+        {
+            MessageBox.Show("Size: " + ftpManager.FileSize);
         }
     }
 }

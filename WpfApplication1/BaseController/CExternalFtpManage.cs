@@ -56,6 +56,24 @@ namespace WpfApplication1.BaseController
             get { return m_current_size; }
         }
 
+        public delegate void FtpDownloadHandler(object sender, EventArgs args);
+        /// <summary>
+        /// 下载开始！
+        /// </summary>
+        public event FtpDownloadHandler onDownloadStarted;
+        /// <summary>
+        /// 又下载了一点！
+        /// </summary>
+        public event FtpDownloadHandler onDownloadAdvanced;
+        /// <summary>
+        /// 下载结束！
+        /// </summary>
+        public event FtpDownloadHandler onDownloadFinished;
+        /// <summary>
+        /// 取得文件大小
+        /// </summary>
+        public event FtpDownloadHandler onFileSizeRetrieved;
+
 
         /// <summary>
         /// 开始下载到指定路径
@@ -69,14 +87,11 @@ namespace WpfApplication1.BaseController
                 throw new FileExistedException("此路径已存在，又没有说要不要覆盖");
             }
 
-            this.retrieveFileSize();
             m_target_path = targetPath + '\\' + m_ftpInfo.FileName;
-
-            m_fs = File.Create(m_target_path);
-            m_fs.SetLength(m_total_size);
 
             m_downloadThread = new Thread(new ThreadStart(doDownload));
             m_downloadThread.Start();
+            onDownloadStarted(this, null);
         }
 
         /// <summary>
@@ -84,6 +99,11 @@ namespace WpfApplication1.BaseController
         /// </summary>
         private void doDownload()
         {
+            this.retrieveFileSize();
+
+            m_fs = File.Create(m_target_path);
+            m_fs.SetLength(m_total_size);
+
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(m_ftpInfo.getFullUrl());
             request.EnableSsl = m_enable_ssh;
             request.Credentials = new NetworkCredential(m_ftpInfo.UserName, m_ftpInfo.UserPwd);
@@ -110,12 +130,15 @@ namespace WpfApplication1.BaseController
                 readCount = remoteStream.Read(buffer, 0, BUFF_SIZE);
                 m_fs.Write(buffer, 0, readCount);
                 m_current_size += readCount;
+                onDownloadAdvanced(this, null);
             } while (readCount > 0);
 
             remoteStream.Close();
             response.Close();
             m_fs.Close();
             m_fs = null;
+
+            onDownloadFinished(this, null);
         }
 
 
@@ -144,6 +167,8 @@ namespace WpfApplication1.BaseController
             }
             m_total_size = response.ContentLength;
             response.Close();
+
+            onFileSizeRetrieved(this, null);
         }
 
     }
