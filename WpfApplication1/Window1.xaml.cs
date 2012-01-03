@@ -29,8 +29,6 @@ namespace WpfApplication1
 
         }
 
-        private CExternalFtpManage ftpManager = null;
-
         /// <summary>
         /// 用来测试的函数，界面一点，执行某个功能，只是用来测一测
         /// </summary>
@@ -38,6 +36,7 @@ namespace WpfApplication1
         /// <param name="e"></param>
         private void click_to_test(object sender, RoutedEventArgs e)
         {
+            CExternalFtpManage ftpManager = null;
             try
             {
                 CFtpServerInfo ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/server.xml");
@@ -68,22 +67,37 @@ namespace WpfApplication1
 
         private void onDownloadStarted(object o, EventArgs args)
         {
-            MessageBox.Show("started");
+            CExternalFtpManage ftpManager = o as CExternalFtpManage;
+            if (ftpManager != null)
+            {
+                MessageBox.Show("FTP下载" + ftpManager.FileName + "开始！");
+            }
         }
 
         private void onDownloadAdvanced(object o, EventArgs args)
         {
-
+            CExternalFtpManage ftpManager = o as CExternalFtpManage;
+            if (ftpManager != null)
+            {
+            }
         }
 
         private void onDownloadFinished(object o, EventArgs args)
         {
-            MessageBox.Show("finished");
+            CExternalFtpManage ftpManager = o as CExternalFtpManage;
+            if (ftpManager != null)
+            {
+                MessageBox.Show("FTP下载" + ftpManager.FileName + "完成！");
+            }
         }
 
         private void onFileSizeRetrieved(object o, EventArgs args)
         {
-            MessageBox.Show("Size: " + ftpManager.FileSize);
+            CExternalFtpManage ftpManager = o as CExternalFtpManage;
+            if (ftpManager != null)
+            {
+                MessageBox.Show("Size: " + ftpManager.FileSize);
+            }
         }
     }
 }

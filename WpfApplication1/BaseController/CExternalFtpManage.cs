@@ -49,6 +49,14 @@ namespace WpfApplication1.BaseController
         }
 
         /// <summary>
+        /// 下载的文件名
+        /// </summary>
+        public string FileName
+        {
+            get { return m_ftpInfo.FileName; }
+        }
+
+        /// <summary>
         /// 当前已下载大小
         /// </summary>
         public long CurrentSize
