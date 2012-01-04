@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DrawingBrush x:Key="back" Stretch="Uniform">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<DrawingGroup.Children>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="0.801001,0,0,0.801336,4.06901e-005,-1.34309e-005"/>
+						</DrawingGroup.Transform>
+						<DrawingGroup.Children>
+							<ImageDrawing ImageSource="backgroud_files/image0.png" Rect="0,0,799,599"/>
+						</DrawingGroup.Children>
+					</DrawingGroup>
+				</DrawingGroup.Children>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+	<DrawingBrush x:Key="content" Stretch="Uniform">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<DrawingGroup.Children>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="0.64,0,0,0.793388,2.03451e-005,-2.01066e-005"/>
+						</DrawingGroup.Transform>
+						<DrawingGroup.Children>
+							<ImageDrawing ImageSource="backgroud_files/image1.png" Rect="0,0,1000,605"/>
+						</DrawingGroup.Children>
+					</DrawingGroup>
+				</DrawingGroup.Children>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+	<DrawingBrush x:Key="leaf1" Stretch="Uniform">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<DrawingGroup.Children>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="0.801001,0,0,0.801335,1.52588e-005,1.89145e-005"/>
+						</DrawingGroup.Transform>
+						<DrawingGroup.Children>
+							<ImageDrawing ImageSource="backgroud_files/image2.png" Rect="0,0,799,599"/>
+						</DrawingGroup.Children>
+					</DrawingGroup>
+				</DrawingGroup.Children>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+	<DrawingBrush x:Key="leaf2" Stretch="Uniform">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<DrawingGroup.Children>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="0.801001,0,0,0.801335,2.54313e-005,1.12851e-005"/>
+						</DrawingGroup.Transform>
+						<DrawingGroup.Children>
+							<ImageDrawing ImageSource="backgroud_files/image3.png" Rect="0,0,799,599"/>
+						</DrawingGroup.Children>
+					</DrawingGroup>
+				</DrawingGroup.Children>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+</ResourceDictionary>

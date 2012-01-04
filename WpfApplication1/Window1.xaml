@@ -1,0 +1,56 @@
+﻿<Window x:Class="WpfApplication1.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="SmartGrabber" Height="480" Width="640" AllowsTransparency="True" WindowStyle="None"
+    Background="{StaticResource back}"
+    MouseDown="Window_MouseDown" Loaded="Window_Loaded">
+    <Grid Height="451" Width="628.76"  >
+        <TabControl Margin="-2.321,0,90.919,24" Name="tabControl1" Background="{StaticResource content}" SelectionChanged="tabControl1_SelectionChanged">
+            <TabItem Header="我的下载" Name="tabItem1" Background="{StaticResource leaf1}" MaxWidth="Infinity">
+                <TextBlock Height="21.435" Name="textBlock1" Width="120.036" />
+            </TabItem>
+            <TabItem Header="我的私有云" Name="tabItem2" Background="{StaticResource leaf2}">
+                <Grid>
+                    <Canvas Grid.Column="2" Height="100" HorizontalAlignment="Left" Margin="190,34,0,0" Name="canvas1" VerticalAlignment="Top" Width="200" />
+                </Grid>
+                
+                
+            </TabItem>
+            <TabItem Header="同济FTP" Name="tabItem3" Background="{StaticResource leaf1}">
+                <Grid Height="309" Width="525" />
+            </TabItem>
+        </TabControl>
+
+        <TreeView HorizontalAlignment="Left" Margin="0,38.583,0,104.317" Name="treeView1" Width="170">
+            <TreeViewItem Name="Download" Header="我的下载">
+                <TreeViewItem Header="下载中" />
+                <TreeViewItem Header="已完成">
+                    <TreeViewItem Header="音乐" />
+                    <TreeViewItem Header="影视" />
+                    <TreeViewItem Header="软件" />
+                    <TreeViewItem Header="其他" />
+                </TreeViewItem>
+            </TreeViewItem>
+        </TreeView>
+        <Grid Margin="0,12,90.919,50.583">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="154*" />
+                <ColumnDefinition Width="22*" />
+                <ColumnDefinition Width="22*" />
+                <ColumnDefinition Width="340*" />
+            </Grid.ColumnDefinitions>
+            <Menu Height="22.864" Name="menu1" Margin="35.725,0,77.166,53.734" VerticalAlignment="Bottom" Grid.Column="3" />
+            <TextBox Grid.Column="3" Height="23" HorizontalAlignment="Left" Margin="57,27,0,0" Name="textBox1" VerticalAlignment="Top" Width="277" />
+            <TextBlock Grid.Column="3" Height="23" HorizontalAlignment="Left" Margin="0,30,0,0" Name="textBlock2" Text="下载地址：" VerticalAlignment="Top" />
+            <Canvas Grid.Column="3" Height="119" HorizontalAlignment="Left" Margin="94,119,0,0" Name="canvas2" VerticalAlignment="Top" Width="205" />
+        </Grid>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,131.468,31.438,0" Name="button1" VerticalAlignment="Top" Width="52.873" Background="{StaticResource leaf1}">同步音乐</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,172.909,31.438,0" Name="button2" VerticalAlignment="Top" Width="53.565" Background="{StaticResource leaf2}">同步影视</Button>
+        <Button HorizontalAlignment="Right" Margin="0,212.554,31.438,213.152" Name="button3" Width="53.565" Background="{StaticResource leaf1}">同步软件</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,31.438,172.048" Name="button4" VerticalAlignment="Bottom" Width="53.565" Background="{StaticResource leaf2}">同步其他</Button>
+        <Button Content="X" Height="21" HorizontalAlignment="Left" Margin="603,-10,0,0" Name="button5" VerticalAlignment="Top" Width="26" Click="button5_Click" Background="#00000000" />
+        <Button Background="{StaticResource leaf1}" Content="开始" Height="23" HorizontalAlignment="Right" Margin="0,32,35,0" Name="button6" VerticalAlignment="Top" Width="52.873" />
+        <Button Background="{StaticResource leaf1}" Content="取消" Height="23" HorizontalAlignment="Right" Margin="0,85,32,0" Name="button7" VerticalAlignment="Top" Width="52.873" />
+        <Button Background="{StaticResource leaf1}" Content="暂停" Height="23" HorizontalAlignment="Right" Margin="0,56,32,0" Name="button8" VerticalAlignment="Top" Width="52.873" />
+    </Grid>
+</Window>
