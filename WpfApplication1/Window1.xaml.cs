@@ -61,7 +61,16 @@ namespace WpfApplication1
                 //ftpManager.startDownloading("C:\\Users\\Andriy\\Desktop", true);
                 //long size = ftpManager.FileSize;
 
-                privateFtpManager.upload("C:\\Users\\Andriy\\Desktop\\Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Advanced_Programming_in_The_Unix_Environment(2nd).chm");
+                //privateFtpManager.upload("C:\\Users\\Andriy\\Desktop\\Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Advanced_Programming_in_The_Unix_Environment(2nd).chm");
+                //privateFtpManager.renameFile("Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Unix高级环境编程.chm");
+                //privateFtpManager.delete("Advanced_Programming_in_The_Unix_Environment(2nd).chm");
+                string[] details = privateFtpManager.getFileDetailList();
+                StringBuilder builder = new StringBuilder();
+                foreach (string s in details)
+                {
+                    builder.Append(s + "  |  ");
+                }
+                MessageBox.Show(builder.ToString());
             }
             catch (System.Exception ex)
             {

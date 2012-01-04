@@ -11,6 +11,7 @@ namespace WpfApplication1.BaseController
 {
     /// <summary>
     /// FTP的管理（如同济FTP），操作下载之外的管理
+    /// 主要是对某个文件夹的操作
     /// </summary>
     class CPrivateFtpManage : CAbstractFtpManager
     {
@@ -114,9 +115,22 @@ namespace WpfApplication1.BaseController
         /// <summary>
         /// 删除指定的文件
         /// </summary>
-        public void delete()
+        public void delete(string fileName)
         {
+            FtpWebRequest request = (FtpWebRequest) WebRequest.Create(m_ftpInfo.getFullUrl() + fileName);
+            request.Credentials = new NetworkCredential(m_ftpInfo.UserName, m_ftpInfo.UserPwd);
+            request.EnableSsl = m_enable_ssh;
+            request.Method = WebRequestMethods.Ftp.DeleteFile;
+            request.UseBinary = true;
 
+            try
+            {
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+            }
+            catch (System.Exception ex)
+            {
+            	throw ex;
+            }
         }
 
         /// <summary>
@@ -139,10 +153,23 @@ namespace WpfApplication1.BaseController
         /// <summary>
         /// 改名！
         /// </summary>
-        public void renameFile()
+        public void renameFile(string fileName, string newName)
         {
-            FtpWebRequest request;
-            //request.RenameTo
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(m_ftpInfo.getFullUrl() + fileName);
+            request.Credentials = new NetworkCredential(m_ftpInfo.UserName, m_ftpInfo.UserPwd);
+            request.EnableSsl = m_enable_ssh;
+            request.Method = WebRequestMethods.Ftp.Rename;
+            request.UseBinary = true;
+            request.RenameTo = newName;
+
+            try
+            {
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -151,7 +178,43 @@ namespace WpfApplication1.BaseController
         /// <returns></returns>
         public string[] getFileDetailList()
         {
-            return null;
+            List<string> details = new List<string>();
+
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(m_ftpInfo.getFullUrl());
+            request.UseBinary = true;
+            request.EnableSsl = m_enable_ssh;
+            request.Credentials = new NetworkCredential(m_ftpInfo.UserName, m_ftpInfo.UserPwd);
+            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+
+            FtpWebResponse response = null;
+            StreamReader reader = null;
+            try
+            {
+                response = (FtpWebResponse)request.GetResponse();
+                reader = new StreamReader(response.GetResponseStream());
+                string line = reader.ReadLine();
+                while (line != null)
+                {
+                    details.Add(line);
+                    line = reader.ReadLine();
+                }
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+            return details.ToArray();
         }
     }
 }
