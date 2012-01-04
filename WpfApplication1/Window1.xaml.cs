@@ -42,12 +42,17 @@ namespace WpfApplication1
                 CFtpServerInfo ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/server.xml");
                 ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/各种软件/TortoiseSVN-1.6.14.21012-win32-svn-1.6.16.msi");
                 ftpManager = new CExternalFtpManage(ftpInfo, false);
-                ftpManager.onDownloadStarted += new CExternalFtpManage.FtpDownloadHandler(onDownloadStarted);
-                ftpManager.onDownloadAdvanced += new CExternalFtpManage.FtpDownloadHandler(onDownloadAdvanced);
-                ftpManager.onDownloadFinished += new CExternalFtpManage.FtpDownloadHandler(onDownloadFinished);
-                ftpManager.onFileSizeRetrieved += new CExternalFtpManage.FtpDownloadHandler(onFileSizeRetrieved);
+                ftpManager = new CExternalFtpManage(new CFtpServerInfo("ftp://10.60.0.122/"), false);
 
-//                ftpManager = new CExternalFtpManage(new CFtpServerInfo("ftp://10.60.0.122/"), false);
+                ftpManager.onDownloadStarted += new CExternalFtpManage.FtpHandler(onDownloadStarted);
+                ftpManager.onDownloadAdvanced += new CExternalFtpManage.FtpHandler(onDownloadAdvanced);
+                ftpManager.onDownloadFinished += new CExternalFtpManage.FtpHandler(onDownloadFinished);
+
+                ftpManager.onFileSizeRetrieved += new CExternalFtpManage.FtpHandler(onFileSizeRetrieved);
+
+                ftpManager.onUploadStarted += new CExternalFtpManage.FtpHandler(onUploadStarted);
+                ftpManager.onUploadAdvanced += new CExternalFtpManage.FtpHandler(onUploadAdvanced);
+                ftpManager.onUploadFinished += new CExternalFtpManage.FtpHandler(onUploadFinished);
             }
             catch (System.Exception ex)
             {
@@ -57,10 +62,9 @@ namespace WpfApplication1
 
             try
             {
-                ftpManager.startDownloading("C:\\Users\\Andriy\\Desktop", true);
-                //long size = ftpManager.FileSize;
+                //ftpManager.startDownloading("C:\\Users\\Andriy\\Desktop", true);
 
-                //ftpManager.upload("C:\\Users\\Andriy\\Desktop\\Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Advanced_Programming_in_The_Unix_Environment(2nd).chm");
+                ftpManager.startUploading("C:\\Users\\Andriy\\Desktop\\Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Advanced_Programming_in_The_Unix_Environment(2nd).chm");
                 //ftpManager.renameFile("Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Unix高级环境编程.chm");
                 //ftpManager.delete("Advanced_Programming_in_The_Unix_Environment(2nd).chm");
 //                 string[] details = ftpManager.getFileDetailList();
@@ -91,6 +95,9 @@ namespace WpfApplication1
             CExternalFtpManage ftpManager = o as CExternalFtpManage;
             if (ftpManager != null)
             {
+                CTransferProgressArgs progressArgs = (CTransferProgressArgs) args;
+                long total = progressArgs.TotalSize;
+                long current = progressArgs.CurrentSize;
             }
         }
 
@@ -108,7 +115,33 @@ namespace WpfApplication1
             CExternalFtpManage ftpManager = o as CExternalFtpManage;
             if (ftpManager != null)
             {
-                MessageBox.Show("Size: " + ftpManager.FileSize);
+                CFileSizeArgs sizeArgs = (CFileSizeArgs) args;
+                MessageBox.Show("Size: " + sizeArgs.Size);
+            }
+        }
+
+        private void onUploadStarted(object o, EventArgs args)
+        {
+            CExternalFtpManage ftpManager = o as CExternalFtpManage;
+            if (ftpManager != null)
+            {
+                MessageBox.Show(ftpManager.FileName + "上传开始");
+            }
+        }
+
+        private void onUploadAdvanced(object o, EventArgs args)
+        {
+            CTransferProgressArgs progressArgs = (CTransferProgressArgs) args;
+            long total = progressArgs.TotalSize;
+            long current = progressArgs.CurrentSize;
+        }
+
+        private void onUploadFinished(object o, EventArgs args)
+        {
+            CExternalFtpManage ftpManager = o as CExternalFtpManage;
+            if (ftpManager != null)
+            {
+                MessageBox.Show(ftpManager.FileName + "上传结束");
             }
         }
     }
