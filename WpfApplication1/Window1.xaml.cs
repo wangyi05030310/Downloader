@@ -37,7 +37,6 @@ namespace WpfApplication1
         private void click_to_test(object sender, RoutedEventArgs e)
         {
             CExternalFtpManage ftpManager = null;
-            CPrivateFtpManage privateFtpManager = null;
             try
             {
                 CFtpServerInfo ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/server.xml");
@@ -48,7 +47,7 @@ namespace WpfApplication1
                 ftpManager.onDownloadFinished += new CExternalFtpManage.FtpDownloadHandler(onDownloadFinished);
                 ftpManager.onFileSizeRetrieved += new CExternalFtpManage.FtpDownloadHandler(onFileSizeRetrieved);
 
-                privateFtpManager = new CPrivateFtpManage(new CFtpServerInfo("ftp://10.60.0.122/"), false);
+//                ftpManager = new CExternalFtpManage(new CFtpServerInfo("ftp://10.60.0.122/"), false);
             }
             catch (System.Exception ex)
             {
@@ -58,19 +57,19 @@ namespace WpfApplication1
 
             try
             {
-                //ftpManager.startDownloading("C:\\Users\\Andriy\\Desktop", true);
+                ftpManager.startDownloading("C:\\Users\\Andriy\\Desktop", true);
                 //long size = ftpManager.FileSize;
 
-                //privateFtpManager.upload("C:\\Users\\Andriy\\Desktop\\Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Advanced_Programming_in_The_Unix_Environment(2nd).chm");
-                //privateFtpManager.renameFile("Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Unix高级环境编程.chm");
-                //privateFtpManager.delete("Advanced_Programming_in_The_Unix_Environment(2nd).chm");
-                string[] details = privateFtpManager.getFileDetailList();
-                StringBuilder builder = new StringBuilder();
-                foreach (string s in details)
-                {
-                    builder.Append(s + "  |  ");
-                }
-                MessageBox.Show(builder.ToString());
+                //ftpManager.upload("C:\\Users\\Andriy\\Desktop\\Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Advanced_Programming_in_The_Unix_Environment(2nd).chm");
+                //ftpManager.renameFile("Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Unix高级环境编程.chm");
+                //ftpManager.delete("Advanced_Programming_in_The_Unix_Environment(2nd).chm");
+//                 string[] details = ftpManager.getFileDetailList();
+//                 StringBuilder builder = new StringBuilder();
+//                 foreach (string s in details)
+//                 {
+//                     builder.Append(s + "  |  ");
+//                 }
+//                 MessageBox.Show(builder.ToString());
             }
             catch (System.Exception ex)
             {
