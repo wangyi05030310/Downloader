@@ -10,6 +10,23 @@ using WpfApplication1.Exceptions;
 
 namespace WpfApplication1.BaseController
 {
+    /// <summary>
+    /// 包含某个错误的EventArgs
+    /// </summary>
+    class CFtpErrorArgs : EventArgs
+    {
+        private string info;
+
+        public string ErrorInfo
+        {
+            get { return info; }
+        }
+
+        public CFtpErrorArgs(string info)
+        {
+            this.info = info;
+        }
+    }
 
     /// <summary>
     /// 外部FTP资源的下载管理，操作下载
@@ -81,6 +98,10 @@ namespace WpfApplication1.BaseController
         /// 取得文件大小
         /// </summary>
         public event FtpDownloadHandler onFileSizeRetrieved;
+        /// <summary>
+        /// 发生错误了!
+        /// </summary>
+        public event FtpDownloadHandler onFtpError;
 
 
         /// <summary>

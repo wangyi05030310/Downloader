@@ -37,6 +37,7 @@ namespace WpfApplication1
         private void click_to_test(object sender, RoutedEventArgs e)
         {
             CExternalFtpManage ftpManager = null;
+            CPrivateFtpManage privateFtpManager = null;
             try
             {
                 CFtpServerInfo ftpInfo = new CFtpServerInfo("ftp://10.60.0.122/server.xml");
@@ -46,6 +47,8 @@ namespace WpfApplication1
                 ftpManager.onDownloadAdvanced += new CExternalFtpManage.FtpDownloadHandler(onDownloadAdvanced);
                 ftpManager.onDownloadFinished += new CExternalFtpManage.FtpDownloadHandler(onDownloadFinished);
                 ftpManager.onFileSizeRetrieved += new CExternalFtpManage.FtpDownloadHandler(onFileSizeRetrieved);
+
+                privateFtpManager = new CPrivateFtpManage(new CFtpServerInfo("ftp://10.60.0.122/"), false);
             }
             catch (System.Exception ex)
             {
@@ -55,9 +58,10 @@ namespace WpfApplication1
 
             try
             {
-                ftpManager.startDownloading("C:\\Users\\Andriy\\Desktop", true);
-                long size = ftpManager.FileSize;
+                //ftpManager.startDownloading("C:\\Users\\Andriy\\Desktop", true);
+                //long size = ftpManager.FileSize;
 
+                privateFtpManager.upload("C:\\Users\\Andriy\\Desktop\\Advanced_Programming_in_The_Unix_Environment(2nd).chm", "Advanced_Programming_in_The_Unix_Environment(2nd).chm");
             }
             catch (System.Exception ex)
             {

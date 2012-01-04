@@ -5,6 +5,7 @@ using System.Text;
 using WpfApplication1.ElementEntity;
 using System.IO;
 using System.Net;
+using WpfApplication1.Exceptions;
 
 namespace WpfApplication1.BaseController
 {
@@ -22,55 +23,46 @@ namespace WpfApplication1.BaseController
         /// 上传文件到FTP上
         /// </summary>
         /// <param name="fileurl"></param>
-        public void upload(string fileurl)
+        public void upload(string fileurl, string fileName)
         {
-
             FileInfo fileInf = null;
             try
             {
                 fileInf = new FileInfo(fileurl);
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
-                //传进来的file's url 有问题
-                throw ex;
+                throw new FilePathInvalidException("传进来的文件路径有问题！");
             }
 
-            FtpWebRequest request;
-
-            request = (FtpWebRequest)FtpWebRequest.Create("ftp://10.60.0.122/" + fileInf.Name);
+            FtpWebRequest request = (FtpWebRequest)FtpWebRequest.Create(m_ftpInfo.getFullUrl() + fileName);
             request.Credentials = new NetworkCredential(m_ftpInfo.UserName, m_ftpInfo.UserPwd);
-            //            request.KeepAlive = false;
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.UseBinary = true;
             request.ContentLength = fileInf.Length;
             request.EnableSsl = m_enable_ssh;
 
             byte[] buff = new byte[BUFF_SIZE];
-            int contentLen;
+            int readCount;
 
             FileStream fs = fileInf.OpenRead();
-            Stream stream = null;
+            Stream stream = request.GetRequestStream();
+            do
+            {
+                readCount = fs.Read(buff, 0, BUFF_SIZE);
+                stream.Write(buff, 0, readCount);
+            } while (readCount > 0);
+            stream.Close();
+            fs.Close();
+
             try
             {
-                stream = request.GetRequestStream();
-                do
-                {
-                    contentLen = fs.Read(buff, 0, BUFF_SIZE);
-                    stream.Write(buff, 0, contentLen);
-                } while (contentLen != 0);
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
             }
             catch (System.Exception ex)
             {
+                //这个时候才报异常，可能是网络啥的问题
                 throw ex;
-            }
-            finally
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
-                fs.Close();
             }
         }
 
