@@ -21,6 +21,9 @@ namespace WpfApplication1
     /// </summary>
     public partial class Window1 : Window
     {
+        private CHttpManage httpManager;
+        private string url;
+        private int threadnumber;
         public Window1()
         {
             InitializeComponent();
@@ -73,7 +76,7 @@ namespace WpfApplication1
 
         private void clearButton()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             canvas1.Children.Clear();
         }
 
@@ -97,6 +100,50 @@ namespace WpfApplication1
 
         }
 
+        private void button8_Click(object sender, RoutedEventArgs e)
+        {
+            Say("name");
+        }
+        public void Say(String name)
+        {
+
+            canvas1.Children.Clear();
+
+            //四个方向的边距都是5
+            double width = (this.canvas1.ActualWidth - (1 + 1) * 5) / 1;
+            double height = (this.canvas1.ActualHeight - (1 + 1) * 5) / 1;
+
+
+
+
+
+            TextBlock tb = new TextBlock()
+            {
+                Width = width,
+                Height = height
+
+            };
+            tb.Text = name;
+
+            //Canvas.SetTop(tb, 1 * height + 5);
+            //Canvas.SetLeft(tb,1 * width + 5);
+            Canvas.SetTop(tb, 1);
+            Canvas.SetTop(tb, 1);
+            //这两句很关键。按钮在Canvas中的定位与它自己的Left以及Top不是一个概念
+
+
+            canvas1.Children.Add(tb);
+        }
+
+        private void button7_Click(object sender, RoutedEventArgs e)
+        {
+            clearButton();
+        }
+
+        private void button9_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
 
         /// <summary>
         /// 用来测试的函数，界面一点，执行某个功能，只是用来测一测
@@ -213,6 +260,32 @@ namespace WpfApplication1
                 MessageBox.Show(ftpManager.FileName + "上传结束");
             }
         }
+
+        private void StartHttpDownload(string url, int threadNumber)
+        {
+            httpManager = new CHttpManage(url,"D:\\SmartGrabber",threadNumber);
+
+            httpManager.startDownload();
+        }
+
+        private void SuspendHttpDownload()
+        {
+            httpManager.StopDownload();
+        }
+
+        private void textBox1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+           
+        }
+
+        private void button6_Click(object sender, RoutedEventArgs e)
+        {
+            url = textBox1.Text;
+            threadnumber = Convert.ToInt32(textBox2.Text);
+            StartHttpDownload(url, threadnumber);
+
+        }
+
     }
        
 }
